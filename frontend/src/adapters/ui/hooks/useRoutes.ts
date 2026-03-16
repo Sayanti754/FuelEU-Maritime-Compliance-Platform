@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Route, ComparisonResult } from '../../core/domain/types';
+import { Route, ComparisonResult } from  '../../../core/domain/types';
 import { routeService } from '../infrastructure/apiClient';
 
 export function useRoutes(filters: { vesselType?: string; fuelType?: string; year?: number } = {}) {

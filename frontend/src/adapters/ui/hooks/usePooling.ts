@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { CreatePoolResult, AdjustedCBResult } from '../../core/domain/types';
+import { CreatePoolResult, AdjustedCBResult } from '../../../core/domain/types';
 import { poolService, complianceService } from '../infrastructure/apiClient';
 
 export interface PoolMemberDraft {

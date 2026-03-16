@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { ComplianceBalance, BankingResult, BankRecord, AdjustedCBResult } from '../../core/domain/types';
+import { ComplianceBalance, BankingResult, BankRecord, AdjustedCBResult } from '../../../core/domain/types';
 import { complianceService, bankingService } from '../infrastructure/apiClient';
 
 export function useBanking() {

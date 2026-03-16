@@ -15,8 +15,23 @@ This platform enables maritime operators to:
 
 ---
 
-## Repository Structure
+## Screenshots
 
+### 🚢 Routes Tab — Route Registry & Baselines
+![Routes](Screenshot%202026-03-16%20144604.png)
+
+### 📊 Compare Tab — GHG Intensity Comparison Chart
+![Compare](Screenshot%202026-03-16%20144615.png)
+
+### 🏦 Banking Tab — Article 20 Compliance Banking
+![Banking](Screenshot%202026-03-16%20144626.png)
+
+### 🏊 Pooling Tab — Article 21 Compliance Pooling
+![Pooling](Screenshot%202026-03-16%20144705.png)
+
+---
+
+## Repository Structure
 ```
 fueleu/
 ├── backend/                 # Node.js + TypeScript + PostgreSQL
@@ -50,7 +65,6 @@ fueleu/
 ## Architecture
 
 Both frontend and backend follow **Hexagonal Architecture (Ports & Adapters)**:
-
 ```
            ┌─────────────────────────────────┐
            │           CORE                  │
@@ -94,46 +108,30 @@ Positive CB = **Surplus** · Negative CB = **Deficit**
 - Node.js ≥ 18
 - PostgreSQL ≥ 14
 - npm ≥ 9
+- Docker Desktop (for PostgreSQL)
 
 ---
 
-### Backend
+### 1. Start Database
+```bash
+docker-compose up -d
+```
 
+### 2. Backend
 ```bash
 cd backend
-
-# 1. Install dependencies
-npm install
-
-# 2. Configure environment
 cp .env.example .env
-# Edit .env — set DATABASE_URL to your PostgreSQL connection string
-
-# 3. Run database migrations
+npm install
 npm run migrate
-
-# 4. Seed with sample data (5 routes from spec)
 npm run seed
-
-# 5. Start development server
 npm run dev
 # → API running at http://localhost:3001
 ```
 
----
-
-### Frontend
-
+### 3. Frontend
 ```bash
 cd frontend
-
-# 1. Install dependencies
-npm install
-
-# 2. Optional: set API URL (defaults to http://localhost:3001)
-echo "REACT_APP_API_URL=http://localhost:3001" > .env
-
-# 3. Start development server
+npm install --legacy-peer-deps
 npm run dev
 # → App running at http://localhost:3000
 ```
@@ -141,36 +139,13 @@ npm run dev
 ---
 
 ## Running Tests
-
-### Backend Tests
-
 ```bash
-cd backend
+# Backend
+cd backend && npm test
 
-# All tests (unit + integration)
-npm test
-
-# Unit tests only
-npm run test:unit
-
-# With coverage report
-npm test -- --coverage
+# Frontend
+cd frontend && npm test
 ```
-
-**Test coverage:**
-- `formulas.test.ts` — all domain formula functions
-- `usecases.test.ts` — all 5 use cases with mocked repositories
-
-### Frontend Tests
-
-```bash
-cd frontend
-
-npm test
-```
-
-**Test coverage:**
-- `hooks.test.ts` — all 4 custom React hooks with mocked API client
 
 ---
 
@@ -208,31 +183,6 @@ npm test
 
 ---
 
-## Sample API Requests
-
-```bash
-# Get all routes
-curl http://localhost:3001/routes
-
-# Set R002 as baseline
-curl -X POST http://localhost:3001/routes/R002/baseline
-
-# Compute CB for R002 in 2024
-curl "http://localhost:3001/compliance/cb?shipId=R002&year=2024"
-
-# Bank 100,000 gCO2eq of surplus
-curl -X POST http://localhost:3001/banking/bank \
-  -H "Content-Type: application/json" \
-  -d '{"shipId":"R002","year":2024,"amount":100000}'
-
-# Create a pool
-curl -X POST http://localhost:3001/pools \
-  -H "Content-Type: application/json" \
-  -d '{"year":2024,"members":[{"shipId":"R002"},{"shipId":"R001"}]}'
-```
-
----
-
 ## Seed Data
 
 | routeId | vesselType | fuelType | year | ghgIntensity | fuelConsumption (t) | distance (km) |
@@ -267,3 +217,8 @@ R001 is seeded as the default baseline.
 
 All formulas, constants, and business rules follow:
 **FuelEU Maritime Regulation (EU) 2023/1805**, Annex IV and Articles 20–21.
+```
+
+Then commit with message:
+```
+docs: add screenshots to README
